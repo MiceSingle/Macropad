@@ -1,0 +1,99 @@
+#include <Keyboard.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+#define SCREEN_WIDTH 128
+#define SCREEN_HEIGHT 64
+#define OLED_RESET -1
+
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+
+// Key pins
+int k1=2,k2=3,k3=4,k4=5,k5=6,k6=7;
+
+// Joystick
+int joyX=A0;
+int joyY=A1;
+
+void setup(){
+    pinMode(k1,INPUT_PULLUP);
+    pinMode(k2,INPUT_PULLUP);
+    pinMode(k3,INPUT_PULLUP);
+    pinMode(k4,INPUT_PULLUP);
+    pinMode(k5,INPUT_PULLUP);
+    pinMode(k6,INPUT_PULLUP);
+
+    Keyboard.begin();
+
+    display.begin(SSD1306_SWITCHCAPVCC,0x3C);
+    display.clearDisplay();
+    display.setTextSize(1);
+    display.setTextColor(SSD1306_WHITE);
+    display.setCursor(0,0);
+    display.println("MACROPAD READY");
+    display.display();
+}
+
+void loop(){
+    if(!digitalRead(k1)) openVSCode();
+    if(!digitalRead(k2)) openDevCpp();
+    if(!digitalRead(k3)) customMacro();
+    if(!digitalRead(k5)) openDownloads();
+    if(!digitalRead(k6)) shutdownPC();
+
+    delay(200);
+}
+
+void openVSCode(){
+    showText("Opening VS Code");
+    Keyboard.press(KEY_LEFT_GUI);
+    Keyboard.press('r');
+    Keyboard.releaseAll();
+    delay(200);
+    Keyboard.print("code");
+    Keyboard.write(KEY_RETURN);
+}
+
+void openDevCpp(){
+    showText("Opening Dev-C++");
+    Keyboard.press(KEY_LEFT_GUI);
+    Keyboard.press('r');
+    Keyboard.releaseAll();
+    delay(200);
+    Keyboard.print("devcpp");
+    Keyboard.write(KEY_RETURN);
+}
+
+void customMacro(){
+    showText("Custom Macro");
+    Keyboard.print("Hello from MacroPad!");
+}
+
+void openDownloads(){
+    showText("Opening Downloads");
+    Keyboard.press(KEY_LEFT_GUI);
+    Keyboard.press('e');
+    Keyboard.releaseAll();
+    delay(300);
+    Keyboard.press(KEY_LEFT_ALT);
+    Keyboard.press('d');
+    Keyboard.releaseAll();
+}
+
+void shutdownPC(){
+    showText("Shutting Down");
+    Keyboard.press(KEY_LEFT_GUI);
+    Keyboard.press('r');
+    Keyboard.releaseAll();
+    delay(200);
+    Keyboard.print("shutdown /s /t 0");
+    Keyboard.write(KEY_RETURN);
+}
+
+void showText(String msg){
+    display.clearDisplay();
+    display.setCursor(0,0);
+    display.println(msg);
+    display.display();
+}
