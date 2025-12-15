@@ -1,0 +1,7 @@
+Top Left     → VS Code        → Pin 2
+Top Middle   → Dev-C++        → Pin 3
+Top Right    → Custom Macro   → Pin 4
+
+Bottom Left  → Joystick Btn   → Pin 5
+Bottom Middle→ Explorer DLs   → Pin 6
+Bottom Right → Shutdown       → Pin 7
